@@ -14,3 +14,9 @@ Solr cluster with 3 servers and 3 zookeepers
 3. Run ```terraform apply``` to create the Solr cloud with 3 servers and 3 Zookeepers. Make adjustments as needed. 
 
 <img width="988" alt="image" src="https://user-images.githubusercontent.com/3796667/166133000-967800e5-7f44-4fd2-ab9e-d18bd81f8c8d.png">
+
+4. Naviate to **http://<solr_public_ip>:8983** to checkout Solr. _Wait at least 5 minutes after terraform apply finishes in step 3._
+
+<img width="1419" alt="image" src="https://user-images.githubusercontent.com/3796667/166133150-e3afc652-6936-4014-af18-ba58dc9394ba.png">
+
+5. [Learn Apache Solr](https://www.google.com/search?q=learn+apache+solr&rlz=1C5CHFA_enPT818PT818&oq=learn+apache+Solr&aqs=chrome.0.0i512j0i22i30j0i390l3.4282j0j7&sourceid=chrome&ie=UTF-8)
