@@ -7,10 +7,10 @@ terraform {
     }
   }
   backend "s3" {
-    bucket = "jdmedeiros-solr-tfstate"
+    bucket = "jdmedeiros-spotsolr-tfstate"
     key = "prod/vpc/terraform.tfstate"
     region = "us-east-1"
-    dynamodb_table = "jdmedeiros-solr-tfstate-lock"
+    dynamodb_table = "jdmedeiros-spotsolr-tfstate-lock"
     encrypt = true
     profile = "vocareum"
   }
