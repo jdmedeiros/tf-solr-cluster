@@ -26,7 +26,7 @@ resource "aws_subnet" "default" {
   map_public_ip_on_launch = true
 }
 
-# Route Table Assoc for DMZ
+# Route Table Assoc
 resource "aws_route_table_association" "default" {
   subnet_id      = aws_subnet.default.id
   route_table_id = aws_route_table.main_public.id
