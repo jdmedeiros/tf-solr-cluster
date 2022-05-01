@@ -15,7 +15,7 @@ Solr cluster with 3 servers and 3 zookeepers
 
 <img width="988" alt="image" src="https://user-images.githubusercontent.com/3796667/166133000-967800e5-7f44-4fd2-ab9e-d18bd81f8c8d.png">
 
-4. Naviate to **http://<solr_public_ip>:8983** to checkout Solr. _Wait at least 5 minutes after terraform apply finishes in step 3._
+4. Navigate to **http://<solr_public_ip>:8983** to checkout Solr. _Wait at least 5 minutes after terraform apply finishes in step 3._
 
 <img width="1419" alt="image" src="https://user-images.githubusercontent.com/3796667/166133150-e3afc652-6936-4014-af18-ba58dc9394ba.png">
 
