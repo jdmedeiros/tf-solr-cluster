@@ -13,9 +13,9 @@ sudo amazon-linux-extras install -y java-openjdk11 && sudo yum -y install java-1
 echo JAVA_HOME "/usr/" >> /etc/profile.d/java.cshsetenv
 echo JAVA_HOME=/usr/ >> /etc/profile.d/java.shexport
 cd /opt
-wget https://archive.apache.org/dist/lucene/solr/8.9.0/solr-8.9.0.tgz
-tar xzf solr-8.9.0.tgz solr-8.9.0/bin/install_solr_service.sh --strip-components=2
-/opt/install_solr_service.sh solr-8.9.0.tgz -i /opt -d /var/solr -u solr -s solr -p 8983
+wget https://archive.apache.org/dist/lucene/solr/8.9.0/solr-8.11.1.tgz
+tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
+/opt/install_solr_service.sh solr-8.11.1.tgz -i /opt -d /var/solr -u solr -s solr -p 8983
 sed -i 's|#ZK_HOST=""|ZK_HOST="'"$ZOOKEEPERS"'/spot-solr"|g' /etc/default/solr.in.sh
 systemctl enable --now solr
 service solr restart
