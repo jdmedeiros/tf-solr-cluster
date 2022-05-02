@@ -19,5 +19,5 @@ tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-componen
 sed -i 's|#ZK_HOST=""|ZK_HOST="'"$ZOOKEEPERS"'/spot-solr"|g' /etc/default/solr.in.sh
 systemctl enable --now solr
 service solr restart
-/opt/solr/bin/solr zk mkroot /spot-solr -z "$ZOOKEEPERS":2181
+/opt/solr/bin/solr zk mkroot /spot-solr -z "$ZOOKEEPERS"
 service solr restart
