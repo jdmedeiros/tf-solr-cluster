@@ -20,6 +20,8 @@ sed -i 's|#ZK_HOST=""|ZK_HOST="'"${ZOOKEEPERS}"'/solr_v1"|g' /etc/default/solr.i
 systemctl enable --now solr
 service solr restart
 /opt/solr/bin/solr zk mkroot /solr_v1 -z "${ZOOKEEPERS}"
+
+logger Critical time $(date '+%Y%m%d%H')
 SECRET=$(date '+%Y%m%d%H' |md5sum | awk '{print $1}')
 
 cd /opt/solr/server/etc
@@ -39,4 +41,5 @@ sed -i 's|#SOLR_SSL_CHECK_PEER_NAME=true|SOLR_SSL_CHECK_PEER_NAME=true|g' /etc/d
 
 scripts/cloud-scripts/zkcli.sh -zkhost "${ZOOKEEPERS}"/solr_v1 -cmd clusterprop -name urlScheme -val https
 
+sed -i /etc/default/solr.in.sh -re 's/^#?SOLR_AUTH_TYPE=.*/SOLR_AUTH_TYPE="basic"/; s/^#?SOLR_AUTHENTICATION_OPTS=.*/SOLR_AUTHENTICATION_OPTS="-Dbasicauth=admin:'"${SECRET}"'"/'
 service solr restart
