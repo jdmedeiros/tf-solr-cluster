@@ -16,8 +16,27 @@ cd /opt
 wget https://archive.apache.org/dist/lucene/solr/8.11.1/solr-8.11.1.tgz
 tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
 /opt/install_solr_service.sh solr-8.11.1.tgz -i /opt -d /var/solr -u solr -s solr -p 8983
-sed -i 's|#ZK_HOST=""|ZK_HOST="'"$ZOOKEEPERS"'/spot-solr"|g' /etc/default/solr.in.sh
+sed -i 's|#ZK_HOST=""|ZK_HOST="'"${ZOOKEEPERS}"'/solr_v1"|g' /etc/default/solr.in.sh
 systemctl enable --now solr
 service solr restart
-/opt/solr/bin/solr zk mkroot /spot-solr -z "$ZOOKEEPERS"
+/opt/solr/bin/solr zk mkroot /solr_v1 -z "${ZOOKEEPERS}"
+SECRET=$(date '+%Y%m%d%H' |md5sum | awk '{print $1}')
+
+cd /opt/solr/server/etc
+
+keytool -genkeypair -alias solr-ssl -keyalg RSA -keysize 2048 -keypass "${SECRET}" -storepass "${SECRET}" -validity 9999 -keystore solr-ssl.keystore.p12 -storetype PKCS12 -ext SAN=DNS:localhost,IP:172.16.0.12,IP:127.0.0.1 -dname "CN=localhost, OU=Departamento de Informatica, O=ENTA, L=Ponta Delgada, ST=Azores, C=Portugal"
+
+openssl pkcs12 -in solr-ssl.keystore.p12 -out solr-ssl.pem -passin pass:"${SECRET}" -passout pass:"${SECRET}"
+
+sed -i 's|#SOLR_SSL_ENABLED=true|SOLR_SSL_ENABLED=true|g' /etc/default/solr.in.sh
+sed -i 's|#SOLR_SSL_KEY_STORE=etc/solr-ssl.keystore.p12|SOLR_SSL_KEY_STORE=etc/solr-ssl.keystore.p12|g' /etc/default/solr.in.sh
+sed -i 's|#SOLR_SSL_KEY_STORE_PASSWORD=secret|SOLR_SSL_KEY_STORE_PASSWORD='"${SECRET}"'|g' /etc/default/solr.in.sh
+sed -i 's|#SOLR_SSL_TRUST_STORE=etc/solr-ssl.keystore.p12|SOLR_SSL_TRUST_STORE=etc/solr-ssl.keystore.p12|g' /etc/default/solr.in.sh
+sed -i 's|#SOLR_SSL_TRUST_STORE_PASSWORD=secret|SOLR_SSL_TRUST_STORE_PASSWORD='"${SECRET}"'|g' /etc/default/solr.in.sh
+sed -i 's|#SOLR_SSL_NEED_CLIENT_AUTH=false|SOLR_SSL_NEED_CLIENT_AUTH=false|g' /etc/default/solr.in.sh
+sed -i 's|#SOLR_SSL_WANT_CLIENT_AUTH=false|SOLR_SSL_WANT_CLIENT_AUTH=false|g' /etc/default/solr.in.sh
+sed -i 's|#SOLR_SSL_CHECK_PEER_NAME=true|SOLR_SSL_CHECK_PEER_NAME=true|g' /etc/default/solr.in.sh
+
+scripts/cloud-scripts/zkcli.sh -zkhost "${ZOOKEEPERS}"/solr_v1 -cmd clusterprop -name urlScheme -val https
+
 service solr restart
