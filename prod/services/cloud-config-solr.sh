@@ -20,5 +20,5 @@ sed -i 's|#ZK_HOST=""|ZK_HOST="'"$ZOOKEEPERS"'/spot-solr"|g' /etc/default/solr.i
 chmod ugo+x /etc/default/solr.in.sh
 systemctl enable --now solr
 service solr restart
-/opt/solr/bin/solr zk mkroot /spot-solr -z "$ZOOKEEPERS"/spot-solr
+/opt/solr/bin/solr zk mkroot /spot-solr -z "$ZOOKEEPERS"
 service solr restart
