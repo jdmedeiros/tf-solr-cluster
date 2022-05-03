@@ -17,7 +17,8 @@ wget https://archive.apache.org/dist/lucene/solr/8.11.1/solr-8.11.1.tgz
 tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
 /opt/install_solr_service.sh solr-8.11.1.tgz -i /opt -d /var/solr -u solr -s solr -p 8983
 sed -i 's|#ZK_HOST=""|ZK_HOST="'"$ZOOKEEPERS"'/spot-solr"|g' /etc/default/solr.in.sh
+chmod ugo+x /etc/default/solr.in.sh
 systemctl enable --now solr
 service solr restart
-/opt/solr/bin/solr zk mkroot /spot-solr -z "$ZOOKEEPERS"
+/opt/solr/bin/solr zk mkroot /spot-solr -z "$ZOOKEEPERS"/spot-solr
 service solr restart
