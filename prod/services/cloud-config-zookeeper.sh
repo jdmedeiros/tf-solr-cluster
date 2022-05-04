@@ -17,9 +17,9 @@ echo JAVA_HOME "/usr/" >> /etc/profile.d/java.cshsetenv
 echo JAVA_HOME=/usr/ >> /etc/profile.d/java.shexport
 cd /opt
 wget wget https://downloads.apache.org/zookeeper/zookeeper-3.8.0/apache-zookeeper-3.8.0-bin.tar.gz
-tar xvzf apache-zookeeper-3.8.0-bin.tar.gz
+tar xvzf /opt/apache-zookeeper-3.8.0-bin.tar.gz
 ln -s apache-zookeeper-3.8.0-bin zookeeper
-cp zookeeper/conf/zoo_sample.cfg zookeeper/conf/zoo.cfg
+cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg
 cat /tmp/zoo.cfg >> /opt/zookeeper/conf/zoo.cfg
 sed -i 's|"-Dzookeeper.log.file=${ZOO_LOG_FILE}"|"-Dzookeeper.log.file=${ZOO_LOG_FILE}" "-Dzookeeper.4lw.commands.whitelist=*"|g' /opt/zookeeper/bin/zkServer.sh
 /opt/zookeeper/bin/zkServer.sh start
