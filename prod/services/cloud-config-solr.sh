@@ -40,12 +40,14 @@ sed -i 's|#SOLR_SSL_NEED_CLIENT_AUTH=false|SOLR_SSL_NEED_CLIENT_AUTH=false|g' /e
 sed -i 's|#SOLR_SSL_WANT_CLIENT_AUTH=false|SOLR_SSL_WANT_CLIENT_AUTH=false|g' /etc/default/solr.in.sh
 sed -i 's|#SOLR_SSL_CHECK_PEER_NAME=true|SOLR_SSL_CHECK_PEER_NAME=true|g' /etc/default/solr.in.sh
 
-chmod ugo +x /opt/solr/server/scripts/cloud-scripts/zkcli.sh
+chmod ugo+x /opt/solr/server/scripts/cloud-scripts/zkcli.sh
 /opt/solr/server/scripts/cloud-scripts/zkcli.sh -zkhost "${ZOOKEEPERS}"/solr_v1 -cmd clusterprop -name urlScheme -val https
 
 chmod ugo+x /etc/default/solr.in.sh
 sed -i /etc/default/solr.in.sh -re 's/^#?SOLR_AUTH_TYPE=.*/SOLR_AUTH_TYPE="basic"/; s/^#?SOLR_AUTHENTICATION_OPTS=.*/SOLR_AUTHENTICATION_OPTS="-Dbasicauth=admin:'"${SECRET}"'"/'
 
 service solr restart
+
+sleep 5
 
 /opt/solr/bin/solr auth enable -type basicAuth -prompt true -z "${ZOOKEEPERS}"/solr_v1 -blockUnknown true -credentials admin:"${SECRET}"
