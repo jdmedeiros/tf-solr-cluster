@@ -1,10 +1,6 @@
 #!/bin/bash -x
 
-USER=maria              # user to add or configure for - if adding an existing user, change the password manually
-PASSWORD=Passw0rd       # password in case we add the user
-DISPLAYMANAGER=lightdm  # lightdm or gdm3
 SCRIPT_LOG_DETAIL=/var/log/cloud-config-detail.log
-BOTSRVIP=172.26.1.10
 
 exec 3>&1 4>&2                  #
 trap 'exec 2>&4 1>&3' 0 1 2 3   # https://serverfault.com/questions/103501/how-can-i-fully-log-all-bash-scripts-actions
