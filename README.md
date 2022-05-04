@@ -16,9 +16,8 @@ aws_access_key_id=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 aws_secret_access_key=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 aws_session_token=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-
-
-**Contents of file ~/.aws/config **
+ 
+**Contents of file ~/.aws/config**
 
 ```
 [default]
