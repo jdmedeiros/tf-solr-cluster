@@ -23,10 +23,11 @@ service solr restart
 
 logger Critical time $(date '+%Y%m%d%H')
 SECRET=$(date '+%Y%m%d%H' |md5sum | awk '{print $1}')
+LOCALIP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
 cd /opt/solr/server/etc
 
-keytool -genkeypair -alias solr-ssl -keyalg RSA -keysize 2048 -keypass "${SECRET}" -storepass "${SECRET}" -validity 9999 -keystore solr-ssl.keystore.p12 -storetype PKCS12 -ext SAN=DNS:localhost,IP:172.16.0.12,IP:127.0.0.1 -dname "CN=localhost, OU=Departamento de Informatica, O=ENTA, L=Ponta Delgada, ST=Azores, C=Portugal"
+keytool -genkeypair -alias solr-ssl -keyalg RSA -keysize 2048 -keypass "${SECRET}" -storepass "${SECRET}" -validity 9999 -keystore solr-ssl.keystore.p12 -storetype PKCS12 -ext SAN=DNS:localhost,IP:"${LOCALIP}",IP:127.0.0.1 -dname "CN=localhost, OU=Departamento de Informatica, O=ENTA, L=Ponta Delgada, ST=Azores, C=Portugal"
 
 openssl pkcs12 -in solr-ssl.keystore.p12 -out solr-ssl.pem -passin pass:"${SECRET}" -passout pass:"${SECRET}"
 
@@ -39,6 +40,7 @@ sed -i 's|#SOLR_SSL_NEED_CLIENT_AUTH=false|SOLR_SSL_NEED_CLIENT_AUTH=false|g' /e
 sed -i 's|#SOLR_SSL_WANT_CLIENT_AUTH=false|SOLR_SSL_WANT_CLIENT_AUTH=false|g' /etc/default/solr.in.sh
 sed -i 's|#SOLR_SSL_CHECK_PEER_NAME=true|SOLR_SSL_CHECK_PEER_NAME=true|g' /etc/default/solr.in.sh
 
+chmod ugo +x /opt/solr/server/scripts/cloud-scripts/zkcli.sh
 /opt/solr/server/scripts/cloud-scripts/zkcli.sh -zkhost "${ZOOKEEPERS}"/solr_v1 -cmd clusterprop -name urlScheme -val https
 
 chmod ugo+x /etc/default/solr.in.sh
