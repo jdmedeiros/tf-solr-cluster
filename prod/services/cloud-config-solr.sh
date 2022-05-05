@@ -22,7 +22,7 @@ service solr restart
 /opt/solr/bin/solr zk mkroot /solr_v1 -z "${ZOOKEEPERS}"
 
 logger Critical time $(date '+%Y%m%d%H')
-SECRET=$(date '+%Y%m%d%H' |md5sum | awk '{print $1}')
+SECRET=$(date '+%Y%m%d%H%S' |md5sum | awk '{print $1}')
 LOCALIP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
 cd /opt/solr/server/etc
